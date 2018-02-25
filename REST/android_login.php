@@ -2,6 +2,16 @@
 	require_once('../config/koneksi.php');
 	require_once('RESTconfig.php');
 
+	/*
+		example request:
+		{
+			"login_type": "pelanggan",
+			"email": "fredi24@yahoo.com",
+			"password": "19c539cba356953948355f0256eba161",
+			"longitude": "2222222",
+			"latitude": "3333333"
+		}
+	*/
 
 	// get parameter
 	$json_str = file_get_contents('php://input'); //https://davidwalsh.name/php-json
