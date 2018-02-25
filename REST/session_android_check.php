@@ -5,6 +5,11 @@
 
 	/*
 		session_id generated with the following format: md5(email + password + <secret key> + timestamp)
+		example request:
+		{
+			"session_id": "abc123",
+			"login_type": "pelanggan"
+		}
 	*/
 
 	// get parameter
