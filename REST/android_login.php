@@ -13,6 +13,9 @@
 		}
 	*/
 
+	// parse config file
+	$config = parse_ini_file('RESTconfig.ini');
+
 	// get parameter
 	$json_str = file_get_contents('php://input'); //https://davidwalsh.name/php-json
 	$request = json_decode($json_str, TRUE); //http://php.net/manual/en/function.json-decode.php
@@ -37,7 +40,8 @@
 		);
 		$result_query = mysql_fetch_array($query);
 		if($result_query['hasil'] == '1'){
-			$sid = $email . $password . $secretKey . time(); // . (round(microtime(true) * 1000));
+			// $sid = $email . $password . $secretKey . time(); // . (round(microtime(true) * 1000));
+			$sid = $email . $password . $config['secret_key'] . time();
 			$result_sessionid = md5($sid);
 			$micro_expire = time() + (5*3600); //add 5 minutes
 
