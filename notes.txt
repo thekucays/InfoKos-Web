@@ -1,0 +1,4 @@
+contoh upload image:
+- admin/modul/kos/addimg.php
+- admin/modul/kos/aksi.php
+- config/upload.php
