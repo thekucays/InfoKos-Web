@@ -81,9 +81,9 @@
                                         '1')");
 	        if($insert){
 	        	$status = 'ok';
-	        	$description = 'Selamat User $_POST[nama] ($_POST[email]) berhasil didaftarkan.';
+	        	$description = 'Selamat User '. $_POST['nama'] .'('. $_POST['email'] .') berhasil didaftarkan.';
 	        }else{
-	        	$description = 'Maaf User $_POST[nama] ($_POST[email]) gagal didaftarkan.';
+	        	$description = 'Maaf User '. $_POST['nama'] .'('. $_POST['email'] .' gagal didaftarkan.';
 	        }
 		}
 	}
