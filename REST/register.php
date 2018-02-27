@@ -31,17 +31,15 @@
 			$description = 'password and password confirmation did not match';
 		}else if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
     		$description = 'invalid email address';
-		}else if($gender!='f' || $gender!='m'){
+		}else if($gender != 'm' && $gender != 'f'){
 			$description = 'invalid gender';
 		}else{
 			// check user already registered
-			$file_foto = 'D:\Luki\Kerjaan\Projekan\InfoKos-Web\Capture.PNG';
+			$file_foto = 'logo.JPEG';
 			$file_type = pathinfo($file_foto, PATHINFO_EXTENSION);
 			$file_data = file_get_contents($file_foto);
 			$file_base64 = 'data:image/' . $file_type . ';base64,' . base64_encode($file_data);
 			$file_obj = json_encode(array("image"=>$file_base64));
-
-			echo $file_obj;
 
 			// all OK
 			$status = "ok";
@@ -50,8 +48,14 @@
 	}
 
 	// generate result
-	// $result['status'] = $status;
-	// $result['description'] = $description;
-	// $result['status'] = $status;
-	// echo json_encode($result);
+	$result['status'] = $status;
+	$result['description'] = $description;
+	$result['status'] = $status;
+	echo json_encode($result);
+
+	// if($gender == 'm'){
+	// 	echo 'yes';
+	// }else{
+	// 	echo 'no';
+	// }
 ?>
