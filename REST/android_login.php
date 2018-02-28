@@ -1,7 +1,5 @@
 <?php
 	require_once('../config/koneksi.php');
-	require_once('RESTconfig.php');
-
 	/*
 		example request:
 		{
@@ -14,7 +12,7 @@
 	*/
 
 	// parse config file
-	$config = parse_ini_file('RESTconfig.ini');
+	$config = parse_ini_file('RESTconfig.ini', false, INI_SCANNER_RAW)
 
 	// get parameter
 	$json_str = file_get_contents('php://input'); //https://davidwalsh.name/php-json
@@ -27,13 +25,13 @@
 	$password = array_key_exists('password', $request) ? $request['password'] : '';
 	$longitude = array_key_exists('longitude', $request) ? $request['longitude'] : '';
 	$latitude = array_key_exists('latitude', $request) ? $request['latitude'] : '';
-	$status = "nok";
+	$status = $config['status_notok'];
 	$description = "";
 	$result_sessionid = '';
 
 	// validate session
 	if($login_type == '' || $email == '' || $password == '' || $longitude == '' || $latitude == ''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	} else if ($login_type == 'pelanggan') {
 		$query = mysql_query(
 			"SELECT count(*) as 'hasil' FROM pelanggan WHERE email = '". $email ."' and password = '". $password ."' and aktif = '1'"
@@ -56,19 +54,19 @@
 				)"
 			);
 			if($query_session){
-				$description = 'ok';
-				$status = 'ok';
+				$description = $config['message_ok'];
+				$status = $config['status_ok'];
 			} else{
-				$description = 'error inserting user session';
+				$description = $config['error_internal'];
 				$result_sessionid = '';
 			}
 		}else{
-			$description = 'invalid username/password, or user inactive';
+			$description = $config['error_invalidlogincredential'];
 		}
 	} else if ($login_type == 'pemilik_kos') {
-		$description = 'NOT AVAILABLE YET';
+		$description = $config['error_notavailable'];		
 	} else{
-		$description = 'invalid login type';
+		$description = $config['error_invalidlogintype'];
 	}	
 
 	//generate result

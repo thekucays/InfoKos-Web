@@ -5,44 +5,46 @@
 		https://stackoverflow.com/questions/30654310/post-variables-not-working-with-files-and-multipart-form-data
 	*/
 	require_once('../config/koneksi.php');
-	require_once('RESTconfig.php');
 	require_once('../config/upload.php');
 
 	// print_r($_FILES);
 	// echo $_POST['nama'];
 
+	// parse config file
+	$config = parse_ini_file('RESTconfig.ini', false, INI_SCANNER_RAW);
+
 	// return values
-	$description = 'invalid parameter';
-	$status = 'nok';
+	$description = $config['error_invalidparameter'];
+	$status = $config['status_notok'];
 	$userid_registered = '';
 
 	// parameter checking
 	if(!isset($_POST['nama']) || $_POST['nama']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_FILES['photo']) || $_FILES['photo']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['idno']) || $_POST['idno']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['email']) || $_POST['email']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['alamat']) || $_POST['alamat']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['gender']) || $_POST['gender']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['phone_number']) || $_POST['phone_number']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['college']) || $_POST['college']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['password']) || $_POST['password']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if(!isset($_POST['password_conf']) || $_POST['password_conf']==''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if($_POST['gender'] != 'm' && $_POST['gender'] != 'f'){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if($_POST['password'] != $_POST['password_conf']){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	}
 
 	// processing data
@@ -52,7 +54,9 @@
 		$isregData = mysql_fetch_array($checkIsRegAlready);
 		$isReg = mysql_num_rows($checkIsRegAlready);
 		if($isReg != 0){
-			$description = 'Maaf User '. $isregData['nama'] .' ('. $isregData['email']. ') sudah terdaftar.';
+			$description = $config['error_alreadyregistered'];
+			$description = str_replace('$p1$', $isregData['nama'], $description);
+			$description = str_replace('$p2$', $isregData['email'], $description);
 		}else{
 			// upload photo to server
 			$nama_file = $_FILES['photo']['name'];
@@ -80,10 +84,14 @@
                                         '$nama_file',
                                         '1')");
 	        if($insert){
-	        	$status = 'ok';
-	        	$description = 'Selamat User '. $_POST['nama'] .'('. $_POST['email'] .') berhasil didaftarkan.';
+	        	$status = $config['status_ok'];
+	        	$description = $config['message_successregister'];
+	        	$description = str_replace('$p1$', $_POST['nama'], $description);
+	        	$description = str_replace('$p2$', $_POST['email'], $description);
 	        }else{
-	        	$description = 'Maaf User '. $_POST['nama'] .'('. $_POST['email'] .' gagal didaftarkan.';
+	        	$description = $config['message_failedregister'];
+	        	$description = str_replace('$p1$', $_POST['nama'], $description);
+	        	$description = str_replace('$p2$', $_POST['email'], $description);
 	        }
 		}
 	}

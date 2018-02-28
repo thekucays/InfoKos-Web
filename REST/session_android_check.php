@@ -1,7 +1,5 @@
 <?php
 	require_once('../config/koneksi.php');
-	require_once('RESTconfig.php');
-
 
 	/*
 		session_id generated with the following format: md5(email + password + <secret key> + timestamp)
@@ -11,6 +9,9 @@
 			"login_type": "pelanggan"
 		}
 	*/
+
+	// parse config file
+	$config = parse_ini_file('RESTconfig.ini', false, INI_SCANNER_RAW)
 
 	// get parameter
 	$json_str = file_get_contents('php://input'); //https://davidwalsh.name/php-json
@@ -26,7 +27,7 @@
 
 	// validate session
 	if($session_id == '' || $login_type == ''){
-		$description = 'invalid parameter';
+		$description = $config['error_invalidparameter'];
 	} else{
 		if($login_type == 'pelanggan'){
 			$query = mysql_query(
@@ -37,9 +38,9 @@
 			$session_status = strlen($result_sessionid)>0 ? 'true' : 'false';
 			$description = strlen($result_sessionid)>0 ? 'ok' : 'nok';
 		} elseif ($login_type == 'admin') {
-			$description = 'NOT AVAILABLE YET';
+			$description = $config['error_notavailable'];
 		} else{
-			$description = 'invalid login type';
+			$description = $config['error_invalidlogintype'];
 		}
 	}
 
