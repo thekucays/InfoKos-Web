@@ -18,6 +18,7 @@
 	// return values
 	$description = $config['error_invalidparameter'];
 	$status = $config['status_notok'];
+	$countResult = 0;
 
 	// result parameter
 	$results = array();
@@ -60,13 +61,17 @@
 	// first of all, hit SESSION_ANDROID_CHECK to validate session
 	if($session_id == ''){
 		$description = $config['error_invalidsessionid'];
-	} if(!is_numeric($harga_sewa_min) || !is_numeric($harga_sewa_max)){
-		$description = $config['error_notanumber'];
-	} if($harga_sewa_min > $harga_sewa_max){
+	} else if($harga_sewa_min!='' || $harga_sewa_max!=''){
+		if(!is_numeric($harga_sewa_min) || !is_numeric($harga_sewa_max)){
+			$description = $config['error_notanumber'];
+		}
+	} else if($harga_sewa_min > $harga_sewa_max){
 		$description = $config['error_search_minmaxvalueinverted'];	
-	} if($jenis_kamar!='L'  || $jenis_kamar!='P'){
-		$description = $config['error_search_invalidjeniskamar'];
-	} if($tipe_sewa!=''){
+	} else if($jenis_kamar!=''){ 
+		if($jenis_kamar!='L'  || $jenis_kamar!='P'){
+			$description = $config['error_search_invalidjeniskamar'];
+		}
+	} else if($tipe_sewa!=''){
 		if(!in_array($tipe_sewa, $tipe_sewa_arr)){
 			$description = $config['error_search_invalidrenttype'];
 		}
@@ -165,12 +170,15 @@
 	    	array_push($results['records'], $kost);
 	    }
 
+	    $countResult = mysql_num_rows($querySearch);
 	    $status = $config['status_ok'];
+	    $description = $config['message_ok'];
 	}
 
 	// generate json result
 	$result['status'] = $status;
 	$result['description'] = $description;
+	$result['count'] = $countResult;
 	$result['session_id'] = $session_id;
 	$result['records']	= $results['records'];
 	echo json_encode($result);
