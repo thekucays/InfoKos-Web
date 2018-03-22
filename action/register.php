@@ -2,6 +2,9 @@
 require_once '../config/koneksi.php';
 include "../config/upload.php";
 
+// parse config file
+$config = parse_ini_file('RESTconfig.ini');
+
 $nama_file = $_FILES['photo']['name'];
 if(!empty($nama_file)){
     $nama_file = UploadPhoto($nama_file);

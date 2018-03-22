@@ -12,7 +12,7 @@
 	*/
 
 	// parse config file
-	$config = parse_ini_file('RESTconfig.ini', false, INI_SCANNER_RAW)
+	$config = parse_ini_file('RESTconfig.ini', false, INI_SCANNER_RAW);
 
 	// get parameter
 	$json_str = file_get_contents('php://input'); //https://davidwalsh.name/php-json

@@ -24,7 +24,8 @@
         $option[] = 'fasilitas_kost.fasilitas_id IN (' . $in_fasilitas . ')';
     }
     
-    if(isset($_POST['type_sewa']) && isset($_POST['harga_sewa']) && $_POST['type_sewa'] != '0' && $_POST['type_sewa'] != '0'){                                         
+    //if(isset($_POST['type_sewa']) && isset($_POST['harga_sewa']) && $_POST['type_sewa'] != '0' && $_POST['type_sewa'] != '0'){
+    if(isset($_POST['type_sewa']) && isset($_POST['harga_sewa']) && $_POST['type_sewa'] != '0' && $_POST['harga_sewa'] != '0'){                                         
         
         $harga = explode('-', $_POST['harga_sewa']);
         if(isset($harga[1])){
