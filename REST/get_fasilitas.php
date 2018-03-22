@@ -37,8 +37,6 @@
 	    $countResult = mysql_num_rows($querySearch);
 	    $status = $config['status_ok'];
 	    $description = $config['message_ok'];
-
-
 	}
 
 	// generate json result
